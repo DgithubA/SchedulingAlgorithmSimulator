@@ -42,6 +42,7 @@ import { SummaryTable } from "./SummaryTable";
 import SummaryStatistics from "./SummaryStatistics";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { firstComeFirstServe } from "@/lib/algorithms/FirstComeFirstServe";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -108,8 +109,25 @@ export default function MainForm() {
   };
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    //write your code here...
-    //todo: implement the scheduling algorithms
+    let sequence: Process[] = [];
+    if (processes.length === 0) {
+      toast.error("No processes added!", {
+        position: "top-center",
+      });
+      return;
+    }
+    switch (data.algorithm) {
+      case "fCFS":
+        sequence = firstComeFirstServe(processes);
+        break;
+    }
+
+    setResultSequence(sequence);
+    setFinalizedProcesses([...processes]);
+    //auto scroll to summary
+    setTimeout(() => {
+      summaryRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 0);    
   }
 
   return (
@@ -141,10 +159,7 @@ export default function MainForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="item1">item1 text</SelectItem>
-                        <SelectItem value="item2">item2 text</SelectItem>
-                        <SelectItem value="item3">item3 text</SelectItem>
-                        <SelectItem value="item4">item4 text</SelectItem>
+                        <SelectItem value="fCFS">FCFS(First–Come First-Served)</SelectItem>
                       </SelectContent>
                     </Select>
 
