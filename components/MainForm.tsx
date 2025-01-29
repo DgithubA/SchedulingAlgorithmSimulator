@@ -60,6 +60,7 @@ type Process = {
   process_id: number;
   arrival_time: number;
   burst_time: number;
+  primarity: number;
   background: string;
 };
 
@@ -206,6 +207,9 @@ export default function MainForm() {
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Burst Time : {process.burst_time}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        primarity : {process.primarity}
                       </p>
                     </div>
                   </div>

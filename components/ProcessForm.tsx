@@ -20,6 +20,7 @@ import { randomColor } from "@/lib/utils";
 type Process = {
   arrival_time: number;
   burst_time: number;
+  primarity: number;
   background: string;
 };
 
@@ -29,6 +30,9 @@ const ProcessSchema = z.object({
   }),
   burst_time: z.coerce.number().lte(100, {
     message: "Burst Time cannot be greater than 100.",
+  }),
+  primarity: z.coerce.number().lte(100, {
+    message: "primarity cannot be greater than 100."
   }),
   background: z.string().nonempty({
     message: "Please select a background.",
@@ -46,6 +50,7 @@ export function ProcessForm({ addProcess, initialValues }: ProcessFormProps) {
     defaultValues: initialValues || {
       arrival_time: 0,
       burst_time: 1,
+      primarity: 1,
       background: randomColor(),
     },
   });
@@ -83,6 +88,19 @@ export function ProcessForm({ addProcess, initialValues }: ProcessFormProps) {
               <FormLabel>Burst Time</FormLabel>
               <FormControl>
                 <Input placeholder="Default burst time : 1" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="primarity"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>primarity</FormLabel>
+              <FormControl>
+                <Input placeholder="Default primarity : 1" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -19,6 +19,7 @@ type Process = {
   process_id: number;
   arrival_time: number;
   burst_time: number;
+  primarity: number;
   background: string;
 };
 
@@ -172,6 +173,9 @@ if (algorithm === "fCFS") {
               <p className="text-xs md:text-lg">Burst Time</p>
             </TableHead>
             <TableHead className="text-center">
+              <p className="text-xs md:text-lg">primarity</p>
+            </TableHead>
+            <TableHead className="text-center">
               <p className="text-xs md:text-lg">Waiting Time</p>
             </TableHead>
             <TableHead className="text-center">
@@ -199,6 +203,9 @@ if (algorithm === "fCFS") {
                 {process.burst_time}
               </TableCell>
               <TableCell className="text-center">
+                {process.primarity}
+              </TableCell>
+              <TableCell className="text-center">
                 {process.waitingTime}
               </TableCell>
               <TableCell className="text-center">
@@ -209,7 +216,7 @@ if (algorithm === "fCFS") {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3} className="pl-3 text-xs">
+            <TableCell colSpan={4} className="pl-3 text-xs">
               Total
             </TableCell>
             <TableCell className="text-center">{totalWaitingTime}</TableCell>

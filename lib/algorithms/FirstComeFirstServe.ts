@@ -3,6 +3,7 @@ type Process = {
   process_id: number;
   arrival_time: number;
   burst_time: number;
+  primarity: number;
   background: string;
 };
 
@@ -16,7 +17,12 @@ type Process = {
  */
 export function firstComeFirstServe(processes: Process[]): Process[] {
   // Sort processes by arrival time
-  processes.sort((a, b) => a.arrival_time - b.arrival_time);
+  processes.sort((a, b) => {
+    if (a.arrival_time !== b.arrival_time) {
+      return a.arrival_time - b.arrival_time;
+    }
+    return b.primarity - a.primarity; // Higher priority first
+  });
 
   const result: Process[] = [];
 
@@ -26,6 +32,7 @@ export function firstComeFirstServe(processes: Process[]): Process[] {
       process_id: -1,
       arrival_time: -1, // Not significant for gap
       burst_time: processes[0].arrival_time, // Duration of the initial idle time
+      primarity: processes[0].primarity,
       background: "transparent", // Color for gap
     });
   }
@@ -50,6 +57,7 @@ export function firstComeFirstServe(processes: Process[]): Process[] {
           process_id: -1,
           arrival_time: -1, // Not significant for gap
           burst_time: gapDuration, // Duration of the idle time
+          primarity: -1,
           background: "transparent", // Color for gap
         });
       }
