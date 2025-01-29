@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { GradientPicker } from "./GradientPicker";
 import { useEffect } from "react";
+import { randomColor } from "@/lib/utils";
 
 type Process = {
   arrival_time: number;
@@ -45,7 +46,7 @@ export function ProcessForm({ addProcess, initialValues }: ProcessFormProps) {
     defaultValues: initialValues || {
       arrival_time: 0,
       burst_time: 1,
-      background: "#ffe83f",
+      background: randomColor(),
     },
   });
 
