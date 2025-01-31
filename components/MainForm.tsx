@@ -45,6 +45,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { firstComeFirstServe } from "@/lib/algorithms/FirstComeFirstServe";
 import { Process } from "@/lib/Process";
 import { roundRobin } from "@/lib/algorithms/RoundRobin";
+import ContentSwitch from "@/lib/ContentSwitch";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -121,10 +122,10 @@ export default function MainForm() {
         sequence = firstComeFirstServe(processes);
         break;
       case "RR":
-        sequence = roundRobin(processes, data.quantum ?? 1, data.contentswitchtime ?? 0);
+        sequence = roundRobin(processes, data.quantum ?? 1);
         break;
     }
-
+    if(data.contentswitchtime != 0) sequence = ContentSwitch(sequence,data.contentswitchtime);
     setResultSequence(sequence);
     setFinalizedProcesses([...processes]);
     //auto scroll to summary
