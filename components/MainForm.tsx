@@ -46,6 +46,7 @@ import { firstComeFirstServe } from "@/lib/algorithms/FirstComeFirstServe";
 import { Process } from "@/lib/Process";
 import { roundRobin } from "@/lib/algorithms/RoundRobin";
 import ContentSwitch from "@/lib/ContentSwitch";
+import { shortestJobFirst } from "@/lib/algorithms/ShortestJobFirst";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -124,6 +125,9 @@ export default function MainForm() {
       case "RR":
         sequence = roundRobin(processes, data.quantum ?? 1);
         break;
+      case "SJF":
+        sequence = shortestJobFirst(processes);
+        break;
     }
     if(data.contentswitchtime != 0) sequence = ContentSwitch(sequence,data.contentswitchtime);
     setResultSequence(sequence);
@@ -164,7 +168,8 @@ export default function MainForm() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="fCFS">FCFS(First–Come First-Served)</SelectItem>
-                        <SelectItem value="RR">RR(round rabin)</SelectItem>
+                        <SelectItem value="RR">RR(Round Rabin)</SelectItem>
+                        <SelectItem value="SJF">SJF/SPN(Shortest job first/Shortest Process Next)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -192,7 +197,7 @@ export default function MainForm() {
                 />
               )}
 
-              {selectedAlgorithm === "RR" && (
+              {(selectedAlgorithm === "RR" || selectedAlgorithm == "SJF") && (
                 <FormField
                   control={form.control}
                   name="contentswitchtime"
