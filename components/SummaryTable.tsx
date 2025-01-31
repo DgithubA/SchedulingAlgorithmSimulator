@@ -8,20 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import OrderProcess from "@/lib/OrderProcess";
+import { Process } from "@/lib/Process";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 let waitingTime = 0;
 let turnaroundTime = 0;
 let cpuUtilization = 0;
 let totalExecutionTime = 0;// New variable to export CPU utilization
-
-type Process = {
-  process_id: number;
-  arrival_time: number;
-  burst_time: number;
-  primarity: number;
-  background: string;
-};
 
 type SummaryTableProps = {
   originalProcesses: Process[];
@@ -87,7 +81,7 @@ export function SummaryTable({
       totalWaitingTime += process.waitingTime;
       totalTurnaroundTime += process.turnaroundTime;
     });
-  }else if (algorithm === "RR") {
+  } else if (algorithm === "RR") {
     calculatedProcesses.forEach((process) => {
       const intervals = scheduledProcesses.filter(
         (scheduledProcess) => scheduledProcess.process_id === process.process_id
@@ -109,8 +103,23 @@ export function SummaryTable({
       totalWaitingTime += waitingTime;
       totalTurnaroundTime += turnaroundTime;
     });
-  }
-   else {
+  } else if (algorithm === "HRRN") {
+    const orderedProcess = OrderProcess(scheduledProcesses);
+
+    calculatedProcesses.forEach((process) => {
+      const intervals = orderedProcess.filter(
+        (scheduledProcess) => scheduledProcess.process_id === process.process_id
+      );
+
+
+      let processEndTime = intervals[0].arrival_time + intervals[0].burst_time;
+      console.log("process #"+intervals[0].process_id+ "| endTime:"+processEndTime+"| org arrival_time:"+process.arrival_time);
+      process.turnaroundTime = processEndTime - process.arrival_time;
+      process.waitingTime = process.turnaroundTime - intervals[0].burst_time;
+      totalWaitingTime += process.waitingTime;
+      totalTurnaroundTime += process.turnaroundTime;
+    });
+  } else {
     // For other algorithms, use intervals in scheduledProcesses
     calculatedProcesses.forEach((process) => {
       const intervals = scheduledProcesses.filter(

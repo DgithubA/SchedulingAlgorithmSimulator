@@ -48,6 +48,7 @@ import { roundRobin } from "@/lib/algorithms/RoundRobin";
 import ContextSwitch from "@/lib/ContextSwitch";
 import { shortestJobFirst } from "@/lib/algorithms/ShortestJobFirst";
 import { shortestRemainingTimeFirst } from "@/lib/algorithms/ShortestRemainingTimeFirst";
+import { HighestResponeRatioNext } from "@/lib/algorithms/HighestResponseRatioNext";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -131,12 +132,11 @@ export default function MainForm() {
       case "SRTF":
         sequence = shortestRemainingTimeFirst(processes);  
         break;
+      case "HRRN":
+        sequence = HighestResponeRatioNext(processes);
+        break;  
     }
     if(data.contextSwitchTime != 0) sequence = ContextSwitch(sequence,data.contextSwitchTime);
-
-    const jsonString = JSON.stringify(sequence, null, 2);
-    console.log(jsonString);
-    
     setResultSequence(sequence);
     setFinalizedProcesses([...processes]);
     //auto scroll to summary
@@ -178,6 +178,7 @@ export default function MainForm() {
                         <SelectItem value="RR">RR(Round Rabin)</SelectItem>
                         <SelectItem value="SJF">SJF/SPN(Shortest job first/Shortest Process Next)</SelectItem>
                         <SelectItem value="SRTF">SRTF(Shortest Remaining Time FIRST)</SelectItem>
+                        <SelectItem value="HRRN">HRRN(Highest Response Ratio Next)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

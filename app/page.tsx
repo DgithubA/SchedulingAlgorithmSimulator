@@ -30,10 +30,11 @@ export default function Home() {
           )}
         /> */}
         <div className="w-full flex justify-center pb-5">
-          <HyperText
+          {/* <HyperText
             className="md:text-4xl text-center font-bold text-black dark:text-white"
             text="Scheduling Algorithm Simulator"
-          />
+          /> */}
+          <div className="md:text-4xl text-center font-bold text-black dark:text-white">Scheduling Algorithm Simulator</div>
         </div>
 
         {/* <Particles
