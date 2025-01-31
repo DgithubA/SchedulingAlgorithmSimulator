@@ -50,6 +50,7 @@ import { shortestJobFirst } from "@/lib/algorithms/ShortestJobFirst";
 import { shortestRemainingTimeFirst } from "@/lib/algorithms/ShortestRemainingTimeFirst";
 import { HighestResponeRatioNext } from "@/lib/algorithms/HighestResponseRatioNext";
 import { NonPreenptivePriority } from "@/lib/algorithms/NonPreemptivePriority";
+import { lastComeFirstServe } from "@/lib/algorithms/LastComeFirstServed";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -126,7 +127,7 @@ export default function MainForm() {
       return;
     }
     switch (data.algorithm) {
-      case "fCFS":
+      case "FCFS":
         sequence = firstComeFirstServe(processes);
         break;
       case "RR":
@@ -134,6 +135,7 @@ export default function MainForm() {
         break;
       case "SJF":
         sequence = shortestJobFirst(processes);
+        break;
       case "SRTF":
         sequence = shortestRemainingTimeFirst(processes);  
         break;
@@ -143,6 +145,9 @@ export default function MainForm() {
       case "NonPreemptivePriority":
         sequence = NonPreenptivePriority(processes);
         break;
+      case "LCFS":
+        sequence = lastComeFirstServe(processes);
+        break;  
     }
     if(data.contextSwitchTime != 0) sequence = ContextSwitch(sequence,data.contextSwitchTime);
     setResultSequence(sequence);
@@ -182,7 +187,8 @@ export default function MainForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="fCFS">FCFS(First–Come First-Served)</SelectItem>
+                        <SelectItem value="FCFS">FCFS(First–Come First-Served)</SelectItem>
+                        <SelectItem value="LCFS">LCFS(Last–Come First-Served)</SelectItem>
                         <SelectItem value="RR">RR(Round Rabin)</SelectItem>
                         <SelectItem value="SJF">SJF/SPN(Shortest job first/Shortest Process Next)</SelectItem>
                         <SelectItem value="SRTF">SRTF(Shortest Remaining Time FIRST)</SelectItem>

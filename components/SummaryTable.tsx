@@ -47,41 +47,23 @@ export function SummaryTable({
     };
   });
 
-  // If the algorithm is FCFS, calculate waiting and turnaround times after sorting by arrival time
-  if (algorithm === "fCFS") {
-    // Sort processes by arrival time for FCFS order, ignoring idle processes
-    const sortedProcesses = [...calculatedProcesses].sort(
-      (a, b) => a.arrival_time - b.arrival_time
-    );
+  if (algorithm == "HRRN" || algorithm == "NonPreemptivePriority" || algorithm == 'FCFS' || algorithm == "LCFS") {
+    const orderedProcess = OrderProcess(scheduledProcesses);
+    //console.log(JSON.stringify(orderedProcess,null,2));
+    calculatedProcesses.forEach((process) => {
+      const intervals = orderedProcess.filter(
+        (scheduledProcess) => scheduledProcess.process_id === process.process_id
+      );
 
-    let cumulativeTime = 0;
 
-    // Calculate waiting time and turnaround time for each process
-    sortedProcesses.forEach((process) => {
-      // Skip idle periods (arrival_time === -1) and adjust cumulative time for gaps
-      if (process.arrival_time === -1) {
-        return; // Ignore idle periods for waiting and turnaround calculations
-      }
-
-      // If the next process arrives after the current cumulative time, update for idle time
-      if (process.arrival_time > cumulativeTime) {
-        cumulativeTime = process.arrival_time; // Adjust to next process arrival, skipping idle time
-      }
-
-      // Waiting time is the difference between cumulative time and arrival time
-      process.waitingTime = Math.max(0, cumulativeTime - process.arrival_time);
-
-      // Turnaround time is waiting time + burst time
-      process.turnaroundTime = process.waitingTime + process.burst_time;
-
-      // Update cumulative time by adding the current process's burst time
-      cumulativeTime += process.burst_time;
-
-      // Update totals
+      let processEndTime = intervals[0].arrival_time + intervals[0].burst_time;
+      //console.log("process #"+intervals[0].process_id+ "| endTime:"+processEndTime+"| org arrival_time:"+process.arrival_time);
+      process.turnaroundTime = processEndTime - process.arrival_time;
+      process.waitingTime = process.turnaroundTime - intervals[0].burst_time;
       totalWaitingTime += process.waitingTime;
       totalTurnaroundTime += process.turnaroundTime;
     });
-  } else if (algorithm === "RR") {
+  }else if (algorithm === "RR") {
     calculatedProcesses.forEach((process) => {
       const intervals = scheduledProcesses.filter(
         (scheduledProcess) => scheduledProcess.process_id === process.process_id
@@ -102,23 +84,7 @@ export function SummaryTable({
 
       totalWaitingTime += waitingTime;
       totalTurnaroundTime += turnaroundTime;
-    });
-  } else if (algorithm === "HRRN" || algorithm === "NonPreemptivePriority") {
-    const orderedProcess = OrderProcess(scheduledProcesses);
-
-    calculatedProcesses.forEach((process) => {
-      const intervals = orderedProcess.filter(
-        (scheduledProcess) => scheduledProcess.process_id === process.process_id
-      );
-
-
-      let processEndTime = intervals[0].arrival_time + intervals[0].burst_time;
-      console.log("process #"+intervals[0].process_id+ "| endTime:"+processEndTime+"| org arrival_time:"+process.arrival_time);
-      process.turnaroundTime = processEndTime - process.arrival_time;
-      process.waitingTime = process.turnaroundTime - intervals[0].burst_time;
-      totalWaitingTime += process.waitingTime;
-      totalTurnaroundTime += process.turnaroundTime;
-    });
+    });  
   } else {
     // For other algorithms, use intervals in scheduledProcesses
     calculatedProcesses.forEach((process) => {
