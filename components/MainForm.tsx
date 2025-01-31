@@ -70,6 +70,10 @@ const FormSchema = z.object({
 export default function MainForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues:{
+      quantum:1,
+      contextSwitchTime:0
+    }
   });
 
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -191,7 +195,7 @@ export default function MainForm() {
                   name="quantum"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Enter Time Quantum</FormLabel>
+                      <FormLabel>Enter Time Quantum (default 1)</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
