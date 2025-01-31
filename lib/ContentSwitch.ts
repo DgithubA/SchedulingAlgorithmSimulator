@@ -23,10 +23,11 @@ export default function ContentSwitch(processes: Process[],contentSwitchTime : n
       result.push(currentProcess);
 
       if(nextporcess !== undefined && currentProcess.process_id !== nextporcess.process_id && nextporcess.process_id !== -1 && currentProcess.process_id !== -1){
-        result.push({process_id:-2,arrival_time:-2,burst_time:contentSwitchTime,primarity:-2,background:"transparent"});
-        processes.forEach((process,index)=>{
-          process.arrival_time += contentSwitchTime;
-        });
+        result.push({process_id:-2,arrival_time:currentProcess.burst_time,burst_time:contentSwitchTime,primarity:-2,background:"transparent"});
+        //add arrival_time to next process
+        for (let j = i+1; j < processes.length; j++) {
+          processes[j].arrival_time += contentSwitchTime;
+        }
       }
     }
     return result;

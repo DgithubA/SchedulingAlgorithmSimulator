@@ -10,7 +10,6 @@ type totalProcessesType = {
 };
 
 export default function SummaryStatistics({ totalProcesses, scheduledProcesses }: totalProcessesType) {
-    console.log(scheduledProcesses);
 
     return (
       <div className="flex flex-col justify-evenly items-center md:w-1/2 md:pl-10 pt-4">

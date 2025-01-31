@@ -130,6 +130,10 @@ export default function MainForm() {
         break;
     }
     if(data.contentswitchtime != 0) sequence = ContentSwitch(sequence,data.contentswitchtime);
+
+    const jsonString = JSON.stringify(sequence, null, 2);
+    console.log(jsonString);
+    
     setResultSequence(sequence);
     setFinalizedProcesses([...processes]);
     //auto scroll to summary
