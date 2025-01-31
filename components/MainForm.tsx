@@ -47,6 +47,7 @@ import { Process } from "@/lib/Process";
 import { roundRobin } from "@/lib/algorithms/RoundRobin";
 import ContextSwitch from "@/lib/ContextSwitch";
 import { shortestJobFirst } from "@/lib/algorithms/ShortestJobFirst";
+import { shortestRemainingTimeFirst } from "@/lib/algorithms/ShortestRemainingTimeFirst";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -127,6 +128,8 @@ export default function MainForm() {
         break;
       case "SJF":
         sequence = shortestJobFirst(processes);
+      case "SRTF":
+        sequence = shortestRemainingTimeFirst(processes);  
         break;
     }
     if(data.contextSwitchTime != 0) sequence = ContextSwitch(sequence,data.contextSwitchTime);
@@ -174,6 +177,7 @@ export default function MainForm() {
                         <SelectItem value="fCFS">FCFS(First–Come First-Served)</SelectItem>
                         <SelectItem value="RR">RR(Round Rabin)</SelectItem>
                         <SelectItem value="SJF">SJF/SPN(Shortest job first/Shortest Process Next)</SelectItem>
+                        <SelectItem value="SRTF">SRTF(Shortest Remaining Time FIRST)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -201,7 +205,7 @@ export default function MainForm() {
                 />
               )}
 
-              {(selectedAlgorithm === "RR" || selectedAlgorithm == "SJF") && (
+              {(selectedAlgorithm === "RR" || selectedAlgorithm == "SJF" || selectedAlgorithm == "SRTF") && (
                 <FormField
                   control={form.control}
                   name="contextSwitchTime"
