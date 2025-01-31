@@ -45,7 +45,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { firstComeFirstServe } from "@/lib/algorithms/FirstComeFirstServe";
 import { Process } from "@/lib/Process";
 import { roundRobin } from "@/lib/algorithms/RoundRobin";
-import ContentSwitch from "@/lib/ContentSwitch";
+import ContextSwitch from "@/lib/ContextSwitch";
 import { shortestJobFirst } from "@/lib/algorithms/ShortestJobFirst";
 
 const FormSchema = z.object({
@@ -59,8 +59,8 @@ const FormSchema = z.object({
     }).gte(1, {
       message: "Quantum cannot be less than 1.",
     }).default(1),
-  contentswitchtime: z.coerce.number().lte(20,{
-    message:"Content switch time cannot be greater than 20."
+  contextSwitchTime: z.coerce.number().lte(20,{
+    message:"Context switch time cannot be greater than 20."
   }).default(0),
 });
 
@@ -129,7 +129,7 @@ export default function MainForm() {
         sequence = shortestJobFirst(processes);
         break;
     }
-    if(data.contentswitchtime != 0) sequence = ContentSwitch(sequence,data.contentswitchtime);
+    if(data.contextSwitchTime != 0) sequence = ContextSwitch(sequence,data.contextSwitchTime);
 
     const jsonString = JSON.stringify(sequence, null, 2);
     console.log(jsonString);
@@ -204,15 +204,15 @@ export default function MainForm() {
               {(selectedAlgorithm === "RR" || selectedAlgorithm == "SJF") && (
                 <FormField
                   control={form.control}
-                  name="contentswitchtime"
+                  name="contextSwitchTime"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Enter content switch time(default 0)</FormLabel>
+                      <FormLabel>Enter context switch time(default 0)</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           {...field}
-                          placeholder="content switch time"
+                          placeholder="context switch time"
                           className="input-field"
                         />
                       </FormControl>

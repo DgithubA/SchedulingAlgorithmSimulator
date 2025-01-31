@@ -8,7 +8,7 @@ import { Process } from "../Process";
  * @param {number} quantum - The time slice for each process.
  * @returns {Process[]} - Array of processes, scheduled based on the Round Robin algorithm.
  */
-export function roundRobin(processes: Process[], quantum: number = 1,contentswitchtime : number = 0): Process[] {
+export function roundRobin(processes: Process[], quantum: number = 1): Process[] {
   // Sort processes by arrival time if arrival time are same sort by primarity
   const sortedProcesses = [...processes].sort((a, b) => {
     if (a.arrival_time !== b.arrival_time) {
