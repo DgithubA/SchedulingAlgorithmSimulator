@@ -1,13 +1,8 @@
+import { Process } from "@/lib/Process";
 import { turnaroundTime, waitingTime, cpuUtilization, totalExecutionTime } from "./SummaryTable"
 import AnimatedShinyText from "./ui/animated-shiny-text";
 
-type Process = {
-  process_id: number;
-  arrival_time: number;
-  burst_time: number;
-  primarity: number;
-  background: string;
-};
+
 
 type totalProcessesType = {
   totalProcesses: number;

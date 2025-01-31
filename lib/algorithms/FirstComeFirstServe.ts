@@ -1,6 +1,6 @@
 // Define the Process type
 
-import { Process } from "../proccess";
+import { Process } from "../Process";
 
 
 /**

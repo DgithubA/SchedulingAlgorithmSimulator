@@ -1,5 +1,5 @@
 // roundRobin.ts
-import { Process } from "../proccess";
+import { Process } from "../Process";
 
 /**
  * Applies the Round Robin scheduling algorithm on an array of process objects.

@@ -43,7 +43,7 @@ import SummaryStatistics from "./SummaryStatistics";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { firstComeFirstServe } from "@/lib/algorithms/FirstComeFirstServe";
-import { Process } from "@/lib/proccess";
+import { Process } from "@/lib/Process";
 import { roundRobin } from "@/lib/algorithms/RoundRobin";
 
 const FormSchema = z.object({
