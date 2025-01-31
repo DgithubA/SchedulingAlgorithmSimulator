@@ -103,7 +103,7 @@ export function SummaryTable({
       totalWaitingTime += waitingTime;
       totalTurnaroundTime += turnaroundTime;
     });
-  } else if (algorithm === "HRRN") {
+  } else if (algorithm === "HRRN" || algorithm === "NonPreemptivePriority") {
     const orderedProcess = OrderProcess(scheduledProcesses);
 
     calculatedProcesses.forEach((process) => {

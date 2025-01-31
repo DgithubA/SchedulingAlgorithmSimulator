@@ -49,6 +49,7 @@ import ContextSwitch from "@/lib/ContextSwitch";
 import { shortestJobFirst } from "@/lib/algorithms/ShortestJobFirst";
 import { shortestRemainingTimeFirst } from "@/lib/algorithms/ShortestRemainingTimeFirst";
 import { HighestResponeRatioNext } from "@/lib/algorithms/HighestResponseRatioNext";
+import { NonPreenptivePriority } from "@/lib/algorithms/NonPreemptivePriority";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -139,6 +140,9 @@ export default function MainForm() {
       case "HRRN":
         sequence = HighestResponeRatioNext(processes);
         break;  
+      case "NonPreemptivePriority":
+        sequence = NonPreenptivePriority(processes);
+        break;
     }
     if(data.contextSwitchTime != 0) sequence = ContextSwitch(sequence,data.contextSwitchTime);
     setResultSequence(sequence);
@@ -183,6 +187,7 @@ export default function MainForm() {
                         <SelectItem value="SJF">SJF/SPN(Shortest job first/Shortest Process Next)</SelectItem>
                         <SelectItem value="SRTF">SRTF(Shortest Remaining Time FIRST)</SelectItem>
                         <SelectItem value="HRRN">HRRN(Highest Response Ratio Next)</SelectItem>
+                        <SelectItem value="NonPreemptivePriority">Non Preemptive Priority</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
