@@ -54,8 +54,12 @@ const FormSchema = z.object({
     .number()
     .lte(100, {
       message: "Quantum cannot be greater than 100.",
-    })
-    .optional(),
+    }).gte(1, {
+      message: "Quantum cannot be less than 1.",
+    }).default(1),
+  contentswitchtime: z.coerce.number().lte(20,{
+    message:"Content switch time cannot be greater than 20."
+  }).default(0),
 });
 
 
@@ -117,8 +121,8 @@ export default function MainForm() {
         sequence = firstComeFirstServe(processes);
         break;
       case "RR":
-        sequence = roundRobin(processes, data.quantum ?? 0);
-        break;    
+        sequence = roundRobin(processes, data.quantum ?? 1, data.contentswitchtime ?? 0);
+        break;
     }
 
     setResultSequence(sequence);
@@ -178,6 +182,27 @@ export default function MainForm() {
                           type="number"
                           {...field}
                           placeholder="Time Quantum"
+                          className="input-field"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {selectedAlgorithm === "RR" && (
+                <FormField
+                  control={form.control}
+                  name="contentswitchtime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Enter content switch time(default 0)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          placeholder="content switch time"
                           className="input-field"
                         />
                       </FormControl>

@@ -8,7 +8,7 @@ import { Process } from "../proccess";
  * @param {number} quantum - The time slice for each process.
  * @returns {Process[]} - Array of processes, scheduled based on the Round Robin algorithm.
  */
-export function roundRobin(processes: Process[], quantum: number): Process[] {
+export function roundRobin(processes: Process[], quantum: number = 1,contentswitchtime : number = 0): Process[] {
   // Sort processes by arrival time if arrival time are same sort by primarity
   const sortedProcesses = [...processes].sort((a, b) => {
     if (a.arrival_time !== b.arrival_time) {
@@ -81,6 +81,23 @@ export function roundRobin(processes: Process[], quantum: number): Process[] {
         });
       }
     }
+  }
+
+  if(contentswitchtime != 0){
+    const resultwithcontentswitch: Process[] = [];
+    for (let i = 0; i < result.length; i++) {
+      const currentProcess = result[i];
+      const nextporcess = result[i+1];
+      resultwithcontentswitch.push(currentProcess);
+
+      if(nextporcess !== undefined && currentProcess.process_id !== nextporcess.process_id && nextporcess.process_id !== -1 && currentProcess.process_id !== -1){
+        resultwithcontentswitch.push({process_id:-2,arrival_time:-2,burst_time:contentswitchtime,primarity:-2,background:"transparent"});
+        result.forEach((process,index)=>{
+          process.arrival_time += contentswitchtime;
+        });
+      }
+    }
+    return resultwithcontentswitch;
   }
 
   // Merge consecutive executions of the same process for clarity

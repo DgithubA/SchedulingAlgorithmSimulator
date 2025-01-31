@@ -85,9 +85,11 @@ const GanttChart: React.FC<GanttChartProps> = ({ processes }) => {
                 variants={itemVariants}
               >
                 <span>
-                  {process.arrival_time === -1
+                  { 
+                  process.arrival_time === -1 
                     ? `Idle`
-                    : `P${process.process_id}`}
+                    : (process.arrival_time === -2 ? `switch` : `P${process.process_id}`)
+                  }
                 </span>
               </motion.div>
             );
