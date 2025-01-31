@@ -1,11 +1,7 @@
 // Define the Process type
-type Process = {
-  process_id: number;
-  arrival_time: number;
-  burst_time: number;
-  primarity: number;
-  background: string;
-};
+
+import { Process } from "../proccess";
+
 
 /**
  * Applies the First Come First Serve (FCFS) scheduling algorithm
@@ -16,7 +12,7 @@ type Process = {
  * @returns {Process[]} - Array of processes sorted by arrival_time with gaps included.
  */
 export function firstComeFirstServe(processes: Process[]): Process[] {
-  // Sort processes by arrival time
+  // Sort processes by arrival time if arrival time are same sort by primarity
   processes.sort((a, b) => {
     if (a.arrival_time !== b.arrival_time) {
       return a.arrival_time - b.arrival_time;

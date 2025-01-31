@@ -43,6 +43,8 @@ import SummaryStatistics from "./SummaryStatistics";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { firstComeFirstServe } from "@/lib/algorithms/FirstComeFirstServe";
+import { Process } from "@/lib/proccess";
+import { roundRobin } from "@/lib/algorithms/RoundRobin";
 
 const FormSchema = z.object({
   algorithm: z.string({
@@ -56,13 +58,6 @@ const FormSchema = z.object({
     .optional(),
 });
 
-type Process = {
-  process_id: number;
-  arrival_time: number;
-  burst_time: number;
-  primarity: number;
-  background: string;
-};
 
 export default function MainForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -121,6 +116,9 @@ export default function MainForm() {
       case "fCFS":
         sequence = firstComeFirstServe(processes);
         break;
+      case "RR":
+        sequence = roundRobin(processes, data.quantum ?? 0);
+        break;    
     }
 
     setResultSequence(sequence);
@@ -161,14 +159,33 @@ export default function MainForm() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="fCFS">FCFS(First–Come First-Served)</SelectItem>
+                        <SelectItem value="RR">RR(round rabin)</SelectItem>
                       </SelectContent>
                     </Select>
-
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+              {selectedAlgorithm === "RR" && (
+                <FormField
+                  control={form.control}
+                  name="quantum"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Enter Time Quantum</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          placeholder="Time Quantum"
+                          className="input-field"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               <Button type="submit">Submit</Button>
             </form>
           </Form>
